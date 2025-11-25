@@ -1,0 +1,53 @@
+import type { MetroTheme } from "@/lib/theme";
+
+export const metroTheme: MetroTheme = {
+  name: "metro",
+  background: "#001B36",
+  backdrop: "#001B36",
+  foreground: "#F3F7FF",
+  chrome: "#003259",
+  accent: "#0072C6",
+  neutral: "#0A2B4A",
+  fontFamily:
+    '"Segoe UI", "Inter", "Segoe UI Variable", "Segoe UI Web", "Segoe UI Symbol", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif',
+  headingFontFamily:
+    '"Inter", "Segoe UI Semibold", "Segoe UI", "Segoe UI Variable", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif',
+  tilePalette: {
+    lms: "#0072C6",
+    profile: "#00A0B1",
+    experience: "#008299",
+    stack: "#00B294",
+    talk: "#7E3878",
+    testimonials: "#FFB900",
+    contact: "#E81123",
+    github: "#2D7D9A",
+    linkedin: "#603CBA",
+    sandbox: "#68217A",
+  },
+  tileContrasts: {
+    lms: "light",
+    profile: "light",
+    experience: "light",
+    stack: "dark",
+    talk: "light",
+    testimonials: "dark",
+    contact: "light",
+    github: "light",
+    linkedin: "light",
+    sandbox: "light",
+  },
+  tileLightText: "#F3F7FF",
+  tileDarkText: "#0B2D53",
+  tileIcons: {
+    lms: "case-study-metro",
+    profile: "profile-metro",
+    experience: "experience-metro",
+    stack: "stack-metro",
+    talk: "talk-metro",
+    testimonials: "testimonials-metro",
+    contact: "contact-metro",
+    github: "github-metro",
+    linkedin: "linkedin-metro",
+    sandbox: "sandbox-metro",
+  },
+};

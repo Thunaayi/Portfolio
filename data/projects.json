@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Learning Management System",
+    "summary": "A full-stack LMS featuring real-time classrooms, adaptive assessments, and analytics dashboards.",
+    "tech": ["Next.js", "Node.js", "MongoDB"],
+    "impact": "Scaled to 5k+ active learners across multiple cohorts.",
+    "link": "#"
+  },
+  {
+    "title": "Realtime Collaboration Suite",
+    "summary": "Socket-enabled document collaboration with optimistic UI and offline sync.",
+    "tech": ["React", "Socket.IO", "Redis"],
+    "impact": "Reduced editing conflicts by 42% for remote teams.",
+    "link": "#"
+  }
+]
