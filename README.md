@@ -1,57 +1,48 @@
-# Aimal Asim — Portfolio
+# Portfolio
 
-A professional, interactive portfolio built with a Metro-inspired, grid-based aesthetic. Designed for speed, accessibility, and visual impact.
+This is my personal portfolio. It's a grid-based site built to show what I've been working on.
 
-## ✨ Features
+## What's inside
 
-- **Interactive Metro Grid**: Responsive, theme-aware tiles that act as the primary navigation.
-- **Dynamic Theming**: Multiple curated color palettes (Metro, Neon, Glass, etc.).
-- **Project Case Studies**: Detailed breakdowns of complex full-stack applications.
-- **Mobile-First & Optimized**: Fast load times and smooth transitions across all devices.
-- **Functional Contact Form**: Integrated with Formspree for serverless email submissions.
-- **Resume/CV Management**: Instant download and interactive timeline view.
+- Grid layout inspired by Metro design.
+- Different themes like Neon, Glass, and Retro.
+- Detailed looks at my main projects.
+- Contact form that actually sends emails through Formspree.
 
-## 🛠 Tech Stack
+## Tech
 
-- **Framework**: Next.js 15+ (App Router)
-- **Styling**: Tailwind CSS & Vanilla CSS
-- **Animations**: Framer Motion
-- **Form Handling**: Formspree
-- **Icons**: Lucide & Custom SVG icons
+- Next.js
+- Tailwind CSS
+- Framer Motion
 
-## 🚀 Key Projects
+## Main Projects
 
-### 🎓 ExamExpert (ExpertLMS)
-A feature-rich, full-stack Learning Management System (LMS) tailored for online examinations.
-- **Frontend**: React (Vite), Redux Toolkit, React Query.
-- **Backend**: Node.js, Express.js, MongoDB.
-- **Security**: JWT, Rate-limiting, Helmet.
+### ExamExpert
+A full-stack LMS I built for online exams. 
+Front: React, Redux, React Query. 
+Back: Node, Express, MongoDB.
 
-### ⚕️ AceMrcem
-A premium educational platform for medical professionals preparing for MRCEM exams.
-- **Engine**: Hierarchical content structure and high-fidelity testing environment.
-- **Analytics**: Data-driven progress tracking and IP-based security logging.
+### AceMrcem
+A study platform for doctors preparing for the MRCEM exams. It has a complex content structure and a timed exam simulator.
 
-## 📦 Getting Started
+## Run it locally
 
-1. **Install Dependencies**:
+1. Install things:
    ```bash
    npm install
    ```
 
-2. **Run Development Server**:
+2. Start the dev server:
    ```bash
    npm run dev
    ```
 
-3. **Build & Export**:
+3. Export for hosting:
    ```bash
    npm run build
    ```
 
-## 🌐 Deployment
-
-The project is configured for **static export**. You can deploy the `out/` folder to GitHub Pages, Vercel, or Netlify.
+The site exports to a static `out/` folder, so it works on GitHub Pages or any static host.
 
 ---
-*Created by [Aimal Asim](https://github.com/thunaayi).*
+[Aimal Asim](https://github.com/thunaayi)
