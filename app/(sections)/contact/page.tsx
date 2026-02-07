@@ -37,11 +37,11 @@ export default function ContactPage() {
             <textarea name="message" rows={4} placeholder="Tell me about your product, team, or goals." required />
           </label>
           <div className="route-form__footer">
-            <button type="submit" className="route-card__cta">
+            <button type="submit" className="route-card__cta route-card__cta--button">
               Send message
             </button>
-            <Link href="mailto:hello@example.com" className="route-card__link">
-              Prefer email? hello@example.com
+            <Link href="mailto:aimalasim92@gmail.com" className="route-card__link">
+              Prefer email? aimalasim92@gmail.com
             </Link>
           </div>
         </form>
