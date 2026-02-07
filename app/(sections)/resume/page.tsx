@@ -7,12 +7,12 @@ export default function ResumePage() {
     <SectionLayout
       kicker="Credentials"
       title="Resume"
-      description="Download a clean snapshot of experience and impact. Keep an interactive timeline available for quick context."
+      description="A quick look at what I've done. Download the PDF if you need the official version."
       tileKey="experience"
       aside={
         <div className="space-y-3 text-xs uppercase tracking-[0.35em] text-white/60">
-          <p>Formats — PDF, Notion, Figma handoff</p>
-          <p>Last updated — Nov 2025</p>
+          <p>Formats — PDF, Notion</p>
+          <p>Status — Open to work</p>
         </div>
       }
     >
@@ -20,12 +20,12 @@ export default function ResumePage() {
         <div className="route-card__stack">
           <div className="route-card__row">
             <h2 className="route-card__title">Snapshot</h2>
-            <span className="route-card__meta">7+ yrs experience</span>
+            <span className="route-card__meta">Karachi, PK</span>
           </div>
           <ul className="route-card__list">
-            <li>Lead front-of-house platform work spanning dashboards, realtime analytics, and design systems.</li>
-            <li>Grew cross-functional teams with mentoring, pairing, and ops rituals.</li>
-            <li>Shipped measurable wins: -32% task latency, +18% activation, +24 NPS delta.</li>
+            <li>Building scalable web apps with React, Next.js, and Node.js.</li>
+            <li>Shipped ExamExpert & AceMrcem — complex educational platforms with thousands of users.</li>
+            <li>Obsessed with performance, clean UI, and smooth animations.</li>
           </ul>
         </div>
         <div className="route-card__actions">

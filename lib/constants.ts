@@ -162,7 +162,7 @@ export const HOME_TILES: TileDefinition[] = [
     title: "Featured Talk",
     description: "Watch recent talk",
     size: "medium",
-    href: "/projects",
+    href: "/projects#talks",
     order: 5,
   },
   {
@@ -170,7 +170,7 @@ export const HOME_TILES: TileDefinition[] = [
     title: "Testimonials",
     description: "Client feedback",
     size: "medium",
-    href: "/about",
+    href: "/about#testimonials",
     order: 6,
   },
   {
@@ -186,7 +186,7 @@ export const HOME_TILES: TileDefinition[] = [
     title: "GitHub",
     description: "Latest repos",
     size: "medium",
-    href: "https://github.com/",
+    href: "https://github.com/thunaayi",
     order: 8,
   },
   {
@@ -202,7 +202,7 @@ export const HOME_TILES: TileDefinition[] = [
     title: "Sandbox",
     description: "Experiments",
     size: "medium",
-    href: "/projects",
+    href: "/projects#sandbox",
     order: 10,
   },
 ];

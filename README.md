@@ -1,41 +1,57 @@
-<<<<<<< HEAD
-# Portfolio
-my portfolio
-=======
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aimal Asim — Portfolio
 
-## Getting Started
+A professional, interactive portfolio built with a Metro-inspired, grid-based aesthetic. Designed for speed, accessibility, and visual impact.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Interactive Metro Grid**: Responsive, theme-aware tiles that act as the primary navigation.
+- **Dynamic Theming**: Multiple curated color palettes (Metro, Neon, Glass, etc.).
+- **Project Case Studies**: Detailed breakdowns of complex full-stack applications.
+- **Mobile-First & Optimized**: Fast load times and smooth transitions across all devices.
+- **Functional Contact Form**: Integrated with Formspree for serverless email submissions.
+- **Resume/CV Management**: Instant download and interactive timeline view.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 15+ (App Router)
+- **Styling**: Tailwind CSS & Vanilla CSS
+- **Animations**: Framer Motion
+- **Form Handling**: Formspree
+- **Icons**: Lucide & Custom SVG icons
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Key Projects
 
-## Learn More
+### 🎓 ExamExpert (ExpertLMS)
+A feature-rich, full-stack Learning Management System (LMS) tailored for online examinations.
+- **Frontend**: React (Vite), Redux Toolkit, React Query.
+- **Backend**: Node.js, Express.js, MongoDB.
+- **Security**: JWT, Rate-limiting, Helmet.
 
-To learn more about Next.js, take a look at the following resources:
+### ⚕️ AceMrcem
+A premium educational platform for medical professionals preparing for MRCEM exams.
+- **Engine**: Hierarchical content structure and high-fidelity testing environment.
+- **Analytics**: Data-driven progress tracking and IP-based security logging.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+2. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Build & Export**:
+   ```bash
+   npm run build
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
->>>>>>> 2e4e190 (Initial commit from Create Next App)
+## 🌐 Deployment
+
+The project is configured for **static export**. You can deploy the `out/` folder to GitHub Pages, Vercel, or Netlify.
+
+---
+*Created by [Aimal Asim](https://github.com/thunaayi).*

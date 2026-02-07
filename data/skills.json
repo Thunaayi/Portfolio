@@ -1,7 +1,17 @@
 [
-  "Full-stack JavaScript",
-  "REST & GraphQL APIs",
-  "Authentication & Authorization",
-  "Real-time Collaboration",
-  "Cloud Deployments"
+  "React & TypeScript",
+  "Node.js & Express",
+  "MongoDB & Mongoose",
+  "Socket.IO & Real-time",
+  "REST API Design",
+  "JWT Authentication",
+  "Tailwind CSS",
+  "Framer Motion",
+  "Redux & State Management",
+  "Git & Version Control",
+  "Docker Basics",
+  "Email Integration",
+  "Security Best Practices",
+  "Performance Optimization",
+  "Responsive Design"
 ]

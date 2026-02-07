@@ -29,9 +29,9 @@ export default function Home() {
 
           <div className="pointer-events-none absolute left-1/2 top-8 z-20 flex w-full max-w-4xl -translate-x-1/2 justify-center px-6 sm:px-12">
             <Header
-              title="Metro Live Tiles"
-              eyebrow="Interactive Workspace"
-              description="Arrange your portfolio tiles just like the Windows 8 start screen. Drag, drop, and personalize the layout while keeping the flat Metro charm. Click or tap a tile to open its section."
+              title="Aimal Asim"
+              eyebrow="Full Stack & UI Dev"
+              description="Welcome to my digital garden. Explore my work by clicking on any of the interactive tiles below."
               tip="Tip: Use the tiles as navigation. Tab to a tile and press Enter to open that section."
               className="pointer-events-auto w-full"
             />

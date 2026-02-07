@@ -2,27 +2,6 @@
 
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragOverEvent,
-  DragStartEvent,
-  KeyboardSensor,
-  PointerSensor,
-  rectIntersection,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  rectSortingStrategy,
-  sortableKeyboardCoordinates,
-  useSortable,
-  defaultAnimateLayoutChanges,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -132,128 +111,10 @@ function createTileInstances(): TileInstance[] {
   return shuffle(instances);
 }
 
-type TileContextMenuProps = {
-  anchor: { x: number; y: number };
-  tileId: string;
-  tileTitle: string;
-  activeSize: TileSize;
-  onSelect: (tileId: string, size: TileSize) => void;
-  onClose: () => void;
-};
-
-function TileContextMenu({ anchor, tileId, tileTitle, activeSize, onSelect, onClose }: TileContextMenuProps) {
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    menuRef.current?.focus({ preventScroll: true });
-  }, []);
-
-  useEffect(() => {
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target as Node | null;
-      if (!menuRef.current || (target && menuRef.current.contains(target))) {
-        return;
-      }
-      onClose();
-    };
-
-    const handleContextMenu = (event: MouseEvent) => {
-      const target = event.target as Node | null;
-      if (!menuRef.current || (target && menuRef.current.contains(target))) {
-        return;
-      }
-      onClose();
-    };
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("pointerdown", handlePointerDown);
-    window.addEventListener("contextmenu", handleContextMenu);
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("pointerdown", handlePointerDown);
-      window.removeEventListener("contextmenu", handleContextMenu);
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [onClose]);
-
-  return (
-    <div className="fixed inset-0 z-50" aria-hidden>
-      <div className="absolute inset-0" onClick={onClose} onContextMenu={onClose} />
-      <div
-        ref={menuRef}
-        tabIndex={-1}
-        role="menu"
-        aria-label={`Resize tile ${tileTitle}`}
-        className="absolute min-w-[160px] rounded-sm border border-white/15 bg-(--metro-chrome)/95 backdrop-blur-sm text-[11px] font-medium uppercase tracking-[0.32em] text-white shadow-[0_16px_40px_rgba(0,0,0,0.35)] focus:outline-none"
-        style={{ top: anchor.y, left: anchor.x, transform: "translate(-50%, -50%)" }}
-      >
-        <button
-          type="button"
-          role="menuitemradio"
-          aria-checked={activeSize === "medium"}
-          className={cn(
-            "flex w-full items-center justify-between px-4 py-2 text-left transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-white focus-visible:-outline-offset-2",
-            activeSize === "medium" ? "bg-white/10" : "",
-          )}
-          onClick={() => onSelect(tileId, "medium")}
-        >
-          <span>Medium</span>
-          {activeSize === "medium" ? <span className="text-[0.6rem]">●</span> : null}
-        </button>
-        <button
-          type="button"
-          role="menuitemradio"
-          aria-checked={activeSize === "wide"}
-          className={cn(
-            "flex w-full items-center justify-between px-4 py-2 text-left transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-white focus-visible:-outline-offset-2",
-            activeSize === "wide" ? "bg-white/10" : "",
-          )}
-          onClick={() => onSelect(tileId, "wide")}
-        >
-          <span>Wide</span>
-          {activeSize === "wide" ? <span className="text-[0.6rem]">●</span> : null}
-        </button>
-        <button
-          type="button"
-          role="menuitemradio"
-          aria-checked={activeSize === "large"}
-          className={cn(
-            "flex w-full items-center justify-between px-4 py-2 text-left transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-white focus-visible:-outline-offset-2",
-            activeSize === "large" ? "bg-white/10" : "",
-          )}
-          onClick={() => onSelect(tileId, "large")}
-        >
-          <span>Large</span>
-          {activeSize === "large" ? <span className="text-[0.6rem]">●</span> : null}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-const HOVER_REORDER_DELAY = 220;
-
-type ContextMenuState = {
-  tileId: string;
-  tileTitle: string;
-  size: TileSize;
-  anchor: { x: number; y: number };
-} | null;
-
-function SortableTile({
+function Tile({
   tile,
-  isDraggingGlobal,
-  onContextMenu,
 }: {
   tile: ResolvedTile;
-  isDraggingGlobal: boolean;
-  onContextMenu: (event: ReactMouseEvent, tile: ResolvedTile) => void;
 }) {
   const isExternal = tile.tile.href ? /^https?:\/\//.test(tile.tile.href) : false;
   const { openTile } = useTileFlyover();
@@ -262,16 +123,6 @@ function SortableTile({
   const supportsPointerGlow =
     isGlassTheme || theme.name === "neon" || theme.name === "orchid" || theme.name === "pastel" || theme.name === "metro";
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: tile.instanceId,
-    animateLayoutChanges: (args) => {
-      if (args.isSorting || args.wasDragging) {
-        return true;
-      }
-      return defaultAnimateLayoutChanges(args);
-    },
-  });
-
   const tileRectRef = useRef<DOMRect | null>(null);
 
   const textClass = TEXT_COLOR[tile.tile.contrast];
@@ -279,22 +130,13 @@ function SortableTile({
   const iconClass = tile.tile.contrast === "light" ? TEXT_COLOR.light : TEXT_COLOR.dark;
 
   const handleClick = (event: ReactMouseEvent) => {
-    if (isDraggingGlobal) {
-      event.preventDefault();
-      return;
-    }
-
     event.preventDefault();
     openTile(tile.tile);
   };
 
   const baseColor = tile.tile.color;
 
-  const style: CSSProperties & Record<string, string | number | undefined> = {
-    transform: CSS.Transform.toString(transform),
-    transition: isDragging ? undefined : transition,
-    opacity: isDragging ? 0 : 1,
-  };
+  const style: CSSProperties & Record<string, string | number | undefined> = {};
 
   if (isGlassTheme) {
     style.background = `linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)), ${baseColor}`;
@@ -310,54 +152,45 @@ function SortableTile({
     style["--hover-y"] = "50%";
   }
 
-  const handleContextMenu = (event: ReactMouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    onContextMenu(event, tile);
-  };
-
   const handlePointerEnter = supportsPointerGlow
     ? (event: React.PointerEvent<HTMLElement>) => {
-        tileRectRef.current = event.currentTarget.getBoundingClientRect();
-      }
+      tileRectRef.current = event.currentTarget.getBoundingClientRect();
+    }
     : undefined;
 
   const handlePointerMove = supportsPointerGlow
     ? (event: React.PointerEvent<HTMLElement>) => {
-        const target = event.currentTarget;
-        const rect = tileRectRef.current ?? target.getBoundingClientRect();
-        tileRectRef.current = rect;
-        const x = rect.width ? ((event.clientX - rect.left) / rect.width) * 100 : 50;
-        const y = rect.height ? ((event.clientY - rect.top) / rect.height) * 100 : 50;
-        target.style.setProperty("--hover-x", `${x}%`);
-        target.style.setProperty("--hover-y", `${y}%`);
-        const normalizedX = (x / 100 - 0.5) * 2;
-        const normalizedY = (y / 100 - 0.5) * 2;
-        target.style.setProperty("--hover-shift-x", normalizedX.toFixed(3));
-        target.style.setProperty("--hover-shift-y", normalizedY.toFixed(3));
-      }
+      const target = event.currentTarget;
+      const rect = tileRectRef.current ?? target.getBoundingClientRect();
+      tileRectRef.current = rect;
+      const x = rect.width ? ((event.clientX - rect.left) / rect.width) * 100 : 50;
+      const y = rect.height ? ((event.clientY - rect.top) / rect.height) * 100 : 50;
+      target.style.setProperty("--hover-x", `${x}%`);
+      target.style.setProperty("--hover-y", `${y}%`);
+      const normalizedX = (x / 100 - 0.5) * 2;
+      const normalizedY = (y / 100 - 0.5) * 2;
+      target.style.setProperty("--hover-shift-x", normalizedX.toFixed(3));
+      target.style.setProperty("--hover-shift-y", normalizedY.toFixed(3));
+    }
     : undefined;
 
   const handlePointerLeave = supportsPointerGlow
     ? (event: React.PointerEvent<HTMLElement>) => {
-        const target = event.currentTarget;
-        target.style.setProperty("--hover-x", "50%");
-        target.style.setProperty("--hover-y", "50%");
-        target.style.setProperty("--hover-shift-x", "0");
-        target.style.setProperty("--hover-shift-y", "0");
-        tileRectRef.current = null;
-      }
+      const target = event.currentTarget;
+      target.style.setProperty("--hover-x", "50%");
+      target.style.setProperty("--hover-y", "50%");
+      target.style.setProperty("--hover-shift-x", "0");
+      target.style.setProperty("--hover-shift-y", "0");
+      tileRectRef.current = null;
+    }
     : undefined;
 
   const spans = TILE_SPANS[tile.tile.size];
   const article = (
     <motion.article
-      ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
       className={cn(
-        "relative flex h-full overflow-hidden text-left transition-transform duration-150 cursor-default active:cursor-grabbing focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[--metro-foreground]",
+        "relative flex h-full overflow-hidden text-left transition-transform duration-150 cursor-pointer focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[--metro-foreground]",
         isGlassTheme
           ? "rounded-[14px] border bg-white/5 px-3 py-3"
           : "rounded-[2px] border border-transparent px-3 py-3 shadow-none",
@@ -365,10 +198,9 @@ function SortableTile({
         `col-span-${spans.cols} row-span-${spans.rows}`,
       )}
       data-theme-ripple-item
-      whileHover={{ scale: isDragging ? 1 : 1.01, y: isDragging ? 0 : -2 }}
+      whileHover={{ scale: 1.01, y: -2 }}
       whileTap={{ scale: 0.99 }}
       onClick={handleClick}
-      onContextMenu={handleContextMenu}
       onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
@@ -400,8 +232,6 @@ function SortableTile({
           rel="noreferrer"
           aria-describedby={`tile-${tile.tile.key}-external-note`}
           onClick={handleClick}
-          onContextMenu={handleContextMenu}
-          style={{ cursor: "default" }}
         >
           {article}
         </a>
@@ -413,8 +243,6 @@ function SortableTile({
         href={tile.tile.href}
         className="contents"
         onClick={handleClick}
-        onContextMenu={handleContextMenu}
-        style={{ cursor: "default" }}
       >
         {article}
       </Link>
@@ -428,29 +256,11 @@ export function DraggableGrid() {
   const { theme } = useTheme();
   const themedTiles = useTiles();
   const [instances, setInstances] = useState<ResolvedTile[]>([]);
-  const [instanceOrder, setInstanceOrder] = useState<string[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
-  const initialOrderRef = useRef<string[] | null>(null);
-  const hoverTimeoutRef = useRef<number | null>(null);
-  const pendingOverIdRef = useRef<string | null>(null);
-  const [activeTileKey, setActiveTileKey] = useState<TileKey | null>(null);
-  const [activeTileRect, setActiveTileRect] = useState<{ width: number; height: number } | null>(null);
   const [isReady, setIsReady] = useState(false);
-  const [contextMenu, setContextMenu] = useState<ContextMenuState>(null);
   const parallaxWrapperRef = useRef<HTMLDivElement | null>(null);
   const parallaxFrameRef = useRef<number | null>(null);
   const parallaxValuesRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [parallaxEnabled, setParallaxEnabled] = useState<boolean>(true);
-
-  const clearHoverTimer = useCallback(() => {
-    if (hoverTimeoutRef.current !== null) {
-      window.clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    pendingOverIdRef.current = null;
-  }, []);
-
-  useEffect(() => () => clearHoverTimer(), [clearHoverTimer]);
 
   useEffect(() => {
     return () => {
@@ -512,27 +322,10 @@ export function DraggableGrid() {
     if (typeof window !== "undefined") {
       window.requestAnimationFrame(() => {
         setInstances(resolved);
-        setInstanceOrder(resolved.map((item) => item.instanceId));
         setIsReady(true);
       });
     }
   }, [themedTiles]);
-
-  const activeTile = useMemo(() => {
-    if (!activeTileKey) return null;
-    const next = themedTiles.find((tile) => tile.key === activeTileKey);
-    return next ?? null;
-  }, [activeTileKey, themedTiles]);
-
-  const instanceMap = useMemo(() => {
-    return new Map(instances.map((item) => [item.instanceId, item]));
-  }, [instances]);
-
-  const orderedTiles = useMemo(() => {
-    return instanceOrder
-      .map((id) => instanceMap.get(id))
-      .filter((item): item is ResolvedTile => Boolean(item));
-  }, [instanceMap, instanceOrder]);
 
   const placeholderTiles = useMemo(() => {
     return Array.from({ length: Math.max(16, TILE_KEYS.length * 2) }, (_, index) => ({
@@ -540,6 +333,7 @@ export function DraggableGrid() {
       size: TILE_SIZES[index % TILE_SIZES.length],
     }));
   }, []);
+
   const isGlassTheme = theme.name === "glass";
   const gridTransformStyle = useMemo<CSSProperties>(
     () => ({
@@ -576,7 +370,7 @@ export function DraggableGrid() {
     (event: React.PointerEvent<HTMLDivElement>) => {
       if (!parallaxEnabled) return;
       const target = event.currentTarget;
-      if (isDragging || event.pointerType === "touch") {
+      if (event.pointerType === "touch") {
         return;
       }
       const rect = target.getBoundingClientRect();
@@ -593,131 +387,12 @@ export function DraggableGrid() {
       target.style.setProperty("--hover-shift-y", normalizedY.toFixed(3));
       setParallaxValues(normalizedX, normalizedY);
     },
-    [isDragging, parallaxEnabled, setParallaxValues],
+    [parallaxEnabled, setParallaxValues],
   );
 
   const handleGridPointerLeave = useCallback(() => {
     setParallaxValues(0, 0);
   }, [setParallaxValues]);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 12,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const handleDragStart = useCallback(
-    (event: DragStartEvent) => {
-      setIsDragging(true);
-      initialOrderRef.current = [...instanceOrder];
-      clearHoverTimer();
-      const tile = instanceMap.get(String(event.active.id));
-      if (tile) {
-        setActiveTileKey(tile.tile.key);
-      }
-      const rect = event.active.rect.current?.initial;
-      if (rect) {
-        setActiveTileRect({ width: rect.width, height: rect.height });
-      } else {
-        setActiveTileRect(null);
-      }
-    },
-    [clearHoverTimer, instanceMap, instanceOrder],
-  );
-
-  const handleDragOver = useCallback(
-    (event: DragOverEvent) => {
-      const { active, over } = event;
-      if (!over) {
-        clearHoverTimer();
-        return;
-      }
-
-      const activeId = String(active.id);
-      const overId = String(over.id);
-
-      if (activeId === overId) {
-        clearHoverTimer();
-        return;
-      }
-
-      if (pendingOverIdRef.current === overId && hoverTimeoutRef.current !== null) {
-        return;
-      }
-
-      clearHoverTimer();
-      pendingOverIdRef.current = overId;
-      hoverTimeoutRef.current = window.setTimeout(() => {
-        setInstanceOrder((items) => {
-          const current = [...items];
-          const oldIndex = current.indexOf(activeId);
-          const newIndex = current.indexOf(overId);
-          if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
-            return current;
-          }
-          return arrayMove(current, oldIndex, newIndex);
-        });
-        hoverTimeoutRef.current = null;
-        pendingOverIdRef.current = null;
-      }, HOVER_REORDER_DELAY);
-    },
-    [clearHoverTimer],
-  );
-
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      void event;
-      setIsDragging(false);
-      setActiveTileKey(null);
-      setActiveTileRect(null);
-      clearHoverTimer();
-      initialOrderRef.current = null;
-    },
-    [clearHoverTimer],
-  );
-
-  const handleDragCancel = useCallback(() => {
-    setIsDragging(false);
-    setActiveTileKey(null);
-    setActiveTileRect(null);
-    clearHoverTimer();
-    if (initialOrderRef.current) {
-      setInstanceOrder(initialOrderRef.current);
-      initialOrderRef.current = null;
-    }
-  }, [clearHoverTimer]);
-
-  const handleContextMenu = useCallback((event: ReactMouseEvent, tile: ResolvedTile) => {
-    const x = event.clientX;
-    const y = event.clientY;
-    setContextMenu({ tileId: tile.instanceId, tileTitle: tile.tile.title, size: tile.tile.size, anchor: { x, y } });
-  }, []);
-
-  const handleResize = useCallback((tileId: string, size: TileSize) => {
-    setInstances((current) =>
-      current.map((item) => {
-        if (item.instanceId !== tileId) {
-          return item;
-        }
-        if (item.tile.size === size) {
-          return item;
-        }
-        const updatedTile = { ...item.tile, size };
-        return { ...item, size, tile: updatedTile };
-      }),
-    );
-    setContextMenu(null);
-  }, []);
-
-  const closeContextMenu = useCallback(() => {
-    setContextMenu(null);
-  }, []);
 
   if (!isReady) {
     return (
@@ -760,45 +435,21 @@ export function DraggableGrid() {
   }
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={rectIntersection}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
+    <div
+      ref={parallaxWrapperRef}
+      className="relative flex-1 [--grid-parallax-x:0] [--grid-parallax-y:0]"
+      onPointerMove={handleGridPointerMove}
+      onPointerLeave={handleGridPointerLeave}
     >
-      <SortableContext items={instanceOrder} strategy={rectSortingStrategy}>
-        <div
-          ref={parallaxWrapperRef}
-          className="relative flex-1 [--grid-parallax-x:0] [--grid-parallax-y:0]"
-          onPointerMove={handleGridPointerMove}
-          onPointerLeave={handleGridPointerLeave}
-        >
-          <div
-            className="grid min-h-full grid-flow-row-dense grid-cols-[repeat(auto-fill,minmax(160px,1fr))] auto-rows-[140px] gap-1 sm:gap-1 lg:gap-2 transition-transform duration-300 ease-out will-change-transform"
-            style={gridTransformStyle}
-          >
-            {orderedTiles.map((tile) => (
-              <SortableTile key={tile.instanceId} tile={tile} isDraggingGlobal={isDragging} onContextMenu={handleContextMenu} />
-            ))}
-          </div>
-        </div>
-      </SortableContext>
-      <DragOverlay dropAnimation={{ duration: 180, easing: "ease-out" }}>
-        {activeTile ? <DragPreview tile={activeTile} size={activeTileRect} /> : null}
-      </DragOverlay>
-      {contextMenu ? (
-        <TileContextMenu
-          anchor={contextMenu.anchor}
-          tileId={contextMenu.tileId}
-          tileTitle={contextMenu.tileTitle}
-          activeSize={contextMenu.size}
-          onSelect={handleResize}
-          onClose={closeContextMenu}
-        />
-      ) : null}
-    </DndContext>
+      <div
+        className="grid min-h-full grid-flow-row-dense grid-cols-[repeat(auto-fill,minmax(160px,1fr))] auto-rows-[140px] gap-1 sm:gap-1 lg:gap-2 transition-transform duration-300 ease-out will-change-transform"
+        style={gridTransformStyle}
+      >
+        {instances.map((tile) => (
+          <Tile key={tile.instanceId} tile={tile} />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -857,38 +508,5 @@ function TileSurface({
         ) : null}
       </div>
     </>
-  );
-}
-
-function DragPreview({ tile, size }: { tile: TileData; size: { width: number; height: number } | null }) {
-  const textClass = TEXT_COLOR[tile.contrast];
-  const descriptionClass = DESCRIPTION_COLOR[tile.contrast];
-  const iconClass = tile.contrast === "light" ? "text-white" : "text-[#001B36]";
-
-  const style: CSSProperties = {
-    backgroundColor: tile.color,
-    pointerEvents: "none",
-    width: size?.width,
-    height: size?.height,
-  };
-
-  return (
-    <motion.article
-      layoutId={`tile-${tile.key}`}
-      className={cn(
-        "flex h-full min-w-[160px] flex-col justify-between overflow-hidden rounded-[2px] border border-white/20 px-3 py-3 text-left shadow-[0_24px_48px_rgba(0,0,0,0.35)]",
-        tileSizeClasses[tile.size],
-      )}
-      style={style}
-      initial={{ scale: 1.05, opacity: 0.95 }}
-      animate={{ scale: 1, opacity: 1 }}
-    >
-      <TileSurface
-        tile={tile}
-        iconClassName={iconClass}
-        titleClassName={`${titleClasses[tile.size]} ${textClass}`}
-        descriptionColorClass={descriptionClass}
-      />
-    </motion.article>
   );
 }

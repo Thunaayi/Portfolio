@@ -141,9 +141,9 @@ const fontVariables = [
 ].join(" ");
 
 export const metadata: Metadata = {
-  title: "Your Name — Portfolio",
+  title: "Aimal Asim — Portfolio",
   description:
-    "Highlight your experience, flagship projects, and the impact you create as an engineer.",
+    "Full-stack developer specializing in educational platforms and real-time web applications. Building scalable learning management systems with React, Node.js, and MongoDB.",
 };
 
 export default function RootLayout({
@@ -152,7 +152,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${fontVariables} antialiased font-sans`} style={{ backgroundColor: "var(--metro-background)" }}>
         <ThemeProvider>
           <MetroPageBackground />

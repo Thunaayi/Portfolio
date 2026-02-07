@@ -63,7 +63,22 @@ export function SectionLayout({ title, description, kicker, aside, children, til
     <section className={`route-section route-section--${themeName}`} style={sectionStyle}>
       <Link href="/" className="route-back" prefetch={false} aria-label="Back to home">
         <span className="route-back__icon" aria-hidden="true">
-          ←
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ display: "block" }}
+          >
+            <path
+              d="M10 4L6 8L10 12"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </span>
         <span className="route-back__label">Back</span>
       </Link>

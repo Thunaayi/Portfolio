@@ -17,20 +17,24 @@ export default function ContactPage() {
       }
     >
       <div className="route-card route-card--contact">
-        <form className="route-form">
+        <form
+          action="https://formspree.io/f/xpqjzdqz"
+          method="POST"
+          className="route-form"
+        >
           <div className="route-form__grid">
             <label className="route-form__field">
               <span>Name</span>
-              <input type="text" placeholder="Ada Lovelace" required />
+              <input name="name" type="text" placeholder="Ada Lovelace" required />
             </label>
             <label className="route-form__field">
               <span>Email</span>
-              <input type="email" placeholder="you@example.com" required />
+              <input name="email" type="email" placeholder="you@example.com" required />
             </label>
           </div>
           <label className="route-form__field">
             <span>What should we explore?</span>
-            <textarea rows={4} placeholder="Tell me about your product, team, or goals." required />
+            <textarea name="message" rows={4} placeholder="Tell me about your product, team, or goals." required />
           </label>
           <div className="route-form__footer">
             <button type="submit" className="route-card__cta">
