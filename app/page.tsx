@@ -27,11 +27,11 @@ export default function Home() {
             <DraggableGrid />
           </div>
 
-          <div className="pointer-events-none absolute left-1/2 top-8 z-20 flex w-full max-w-4xl -translate-x-1/2 justify-center px-6 sm:px-12">
+          <div className="pointer-events-none absolute left-0 top-6 z-20 flex w-full max-w-4xl px-8 sm:left-1/2 sm:top-8 sm:-translate-x-1/2 sm:justify-center sm:px-12">
             <Header
               title="Aimal Asim"
               eyebrow="Full Stack & UI Dev"
-              description="Welcome to my digital garden. Explore my work by clicking on any of the interactive tiles below."
+              description="Explore my work by clicking on any of the interactive tiles below."
               className="pointer-events-auto w-full"
             />
           </div>

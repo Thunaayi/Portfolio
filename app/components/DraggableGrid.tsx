@@ -198,8 +198,10 @@ function Tile({
         `col-span-${spans.cols} row-span-${spans.rows}`,
       )}
       data-theme-ripple-item
-      whileHover={{ scale: 1.01, y: -2 }}
-      whileTap={{ scale: 0.99 }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.015, y: -2, zIndex: 10 }}
+      whileTap={{ scale: 0.94, rotateX: 4, rotateY: -4 }}
       onClick={handleClick}
       onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
@@ -403,7 +405,7 @@ export function DraggableGrid() {
         onPointerLeave={handleGridPointerLeave}
       >
         <div
-          className="grid min-h-full grid-flow-row-dense grid-cols-[repeat(auto-fill,minmax(160px,1fr))] auto-rows-[140px] gap-1 sm:gap-1 lg:gap-2 transition-transform duration-500 ease-out will-change-transform"
+          className="grid min-h-full grid-flow-row-dense grid-cols-2 gap-1.5 px-3 pt-64 pb-12 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-2 sm:px-6 sm:pt-48 transition-transform duration-500 ease-out will-change-transform"
           style={gridTransformStyle}
         >
           {placeholderTiles.map((tile) => {
@@ -442,7 +444,7 @@ export function DraggableGrid() {
       onPointerLeave={handleGridPointerLeave}
     >
       <div
-        className="grid min-h-full grid-flow-row-dense grid-cols-[repeat(auto-fill,minmax(160px,1fr))] auto-rows-[140px] gap-1 sm:gap-1 lg:gap-2 transition-transform duration-300 ease-out will-change-transform"
+        className="grid min-h-full grid-flow-row-dense grid-cols-2 gap-1.5 px-3 pt-64 pb-12 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-2 sm:px-6 sm:pt-48 transition-transform duration-300 ease-out will-change-transform"
         style={gridTransformStyle}
       >
         {instances.map((tile) => (
