@@ -405,7 +405,7 @@ export function DraggableGrid() {
         onPointerLeave={handleGridPointerLeave}
       >
         <div
-          className="grid min-h-full grid-flow-row-dense grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] gap-1.5 px-3 pt-56 pb-12 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-2 sm:px-6 sm:pt-32 transition-transform duration-500 ease-out will-change-transform"
+          className="grid min-h-full grid-flow-row-dense grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] gap-1.5 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-2 transition-transform duration-500 ease-out will-change-transform"
           style={gridTransformStyle}
         >
           {placeholderTiles.map((tile) => {
@@ -444,7 +444,7 @@ export function DraggableGrid() {
       onPointerLeave={handleGridPointerLeave}
     >
       <div
-        className="grid min-h-full grid-flow-row-dense grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] gap-1.5 px-3 pt-56 pb-12 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-2 sm:px-6 sm:pt-32 transition-transform duration-300 ease-out will-change-transform"
+        className="grid min-h-full grid-flow-row-dense grid-cols-2 auto-rows-[120px] sm:auto-rows-[140px] gap-1.5 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-2 transition-transform duration-300 ease-out will-change-transform"
         style={gridTransformStyle}
       >
         {instances.map((tile) => (
